@@ -179,16 +179,33 @@ class ImageDownloadFragment : Fragment() {
         }
 
         val path = "$picSavePath/$name"
-        val outputStream = FileOutputStream(path)
+        var inputStream: InputStream? = null
+        var outputStream = FileOutputStream(path)
 
         try {
             body?.let { responseBody ->
-                outputStream.write(responseBody.bytes())
+                inputStream = responseBody.byteStream()
+                var c: Int
+                val buffer = ByteArray(1024)
+
+                inputStream?.let {
+                    do {
+                        c = it.read(buffer)
+
+                        if (c == -1) {
+                            break
+                        }
+
+                        outputStream.write(buffer, 0, c)
+                    } while (true)
+                }
+
                 broadcastPhotoSaved(File(path))
             }
         } catch (e: IOException) {
 
         } finally {
+            inputStream?.close()
             outputStream.close()
         }
     }

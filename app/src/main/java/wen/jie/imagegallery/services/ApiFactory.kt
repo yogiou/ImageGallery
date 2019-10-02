@@ -59,9 +59,6 @@ interface IApiClient {
         logging.level = HttpLoggingInterceptor.Level.BODY
 
         var okHttpBuilder = OkHttpClient.Builder()
-            .addInterceptor(logging)
-            .addInterceptor(ApiErrorInterceptor) // api error interceptor
-            .addInterceptor(createHeaderInterceptor())
             .addInterceptor(object : Interceptor {
                 override fun intercept(chain: Interceptor.Chain): Response {
                     progressListener?.let {
@@ -72,6 +69,9 @@ interface IApiClient {
                     } ?: return chain.proceed(chain.request())
                 }
             })
+            .addInterceptor(logging)
+            .addInterceptor(ApiErrorInterceptor) // api error interceptor
+            .addInterceptor(createHeaderInterceptor())
             .connectTimeout(Config.NETWORK_TIMEOUT, TimeUnit.SECONDS)
             .readTimeout(Config.NETWORK_TIMEOUT, TimeUnit.SECONDS)
             .writeTimeout(Config.NETWORK_TIMEOUT, TimeUnit.SECONDS)
