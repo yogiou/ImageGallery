@@ -1,39 +1,39 @@
 package wen.jie.imagegallery
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
-import android.view.Menu
-import android.view.MenuItem
+import androidx.fragment.app.Fragment
 
 import kotlinx.android.synthetic.main.activity_main.*
+import wen.jie.imagegallery.model.ImageData
+import wen.jie.imagegallery.view.ImageDownloadFragment
+import wen.jie.imagegallery.view.ImageListFragment
 
-class MainActivity : AppCompatActivity() {
-
+class MainActivity : AppCompatActivity(), ImageListFragment.ImageListFragmentCallBack {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
+        init()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
+    private fun init() {
+        val newFragment = ImageListFragment(this)
+        swapFragment(newFragment, ImageListFragment.TAG)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
-        }
+    private fun swapFragment(fragment: Fragment, fragmentTag: String) {
+        val ft = supportFragmentManager?.beginTransaction()
+        ft?.addToBackStack(fragmentTag)
+        ft?.replace(R.id.container, fragment)
+        ft?.commit()
+    }
+
+    override fun goToImageDownload(imageData: ImageData) {
+        val imageDownloadFragment = ImageDownloadFragment()
+        val bundle = Bundle()
+        bundle.putSerializable(ImageDownloadFragment.IMAGE_DATA_KEY, imageData)
+        imageDownloadFragment.arguments = bundle
+        swapFragment(imageDownloadFragment, ImageDownloadFragment.TAG)
     }
 }

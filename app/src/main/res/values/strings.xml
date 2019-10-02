@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">ImageGallery</string>
     <string name="action_settings">Settings</string>
+    <string name="next">Next Page</string>
+    <string name="previous">Previous Page</string>
+    <string name="download">Download</string>
+    <string name="no_internet_error">No internet connection.</string>
+    <string name="general_error">Something went wrong.</string>
+    <string name="downloading">Downloading image...</string>
+    <string name="finish_download">Download image finished</string>
+    <string name="info">Likes: %1$s\nImage width: %2$s\nImage height: %3$s\nComments: %4$s\nTags: %5$s\nDownloads: %6$s\nFavorites: %7$s\nViews: %8$s\nImage size: %9$s\nUser: %10$s\n</string>
 </resources>
