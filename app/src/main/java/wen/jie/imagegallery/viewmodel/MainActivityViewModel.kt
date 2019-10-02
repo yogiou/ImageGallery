@@ -10,12 +10,18 @@ import wen.jie.imagegallery.model.DownloadImageApi
 import wen.jie.imagegallery.utils.BaseErrorHelper
 import wen.jie.imagegallery.utils.RxBus
 import wen.jie.imagegallery.utils.RxEvent
+import java.io.Serializable
 
 
-class ImageDownloadFragmentViewModel {
+class MainActivityViewModel {
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
-    class SaveFileRxEvent(val responseBody: ResponseBody?) : RxEvent
+    data class ImageResponse (
+        val responseBody: ResponseBody?,
+        val name: String
+    ) : Serializable
+
+    class SaveFileRxEvent(val imageResponse: ImageResponse?) : RxEvent
 
     fun downloadImage(downloadImageApi: DownloadImageApi, name: String) {
         downloadImageApi.getImage(name)
@@ -23,7 +29,7 @@ class ImageDownloadFragmentViewModel {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = { response ->
-                    RxBus.getInstance().send(SaveFileRxEvent(response.body()))
+                    RxBus.getInstance().send(SaveFileRxEvent(ImageResponse(response.body(), name)))
                 },
                 onError = { error ->
                     RxBus.getInstance().send(BaseErrorHelper.BaseError(error))
