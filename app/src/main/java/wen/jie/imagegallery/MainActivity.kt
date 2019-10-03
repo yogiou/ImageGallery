@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity(), ImageListFragment.ImageListFragmentCal
     private val imageDownloadFragmentViewModel = MainActivityViewModel()
     private val hashMap: HashMap<String, NotificationCompat.Builder> = HashMap()
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
-    private val picSavePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString()
+    private val picSavePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString()
     private var imageData: ImageData? = null
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
