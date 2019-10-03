@@ -190,9 +190,7 @@ class MainActivity : AppCompatActivity(), ImageListFragment.ImageListFragmentCal
         if (ContextCompat.checkSelfPermission(applicationContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             imageDownloadFragmentViewModel.downloadImage(DownloadImageService.create(object : ProgressResponseBody.OnAttachmentDownloadListener {
                 override fun onAttachmentDownloadUpdate(percent: Int) {
-                    if (percent % 10 == 0 || percent == 100) {
-                        startNotification(imageData, percent)
-                    }
+                    startNotification(imageData, percent)
                 }
 
                 override fun onAttachmentDownloadedError() {
